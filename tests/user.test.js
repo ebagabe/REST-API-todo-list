@@ -64,30 +64,25 @@ describe('User endpoints', () => {
     });
 
     it('Should delete the authenticated user', async () => {
-        // Realiza o login para obter o token JWT válido
         const loginResponse = await request(app)
             .post('/api/users/login')
             .send({ email: 'test@example.com', password: 'password123' });
     
         const authToken = loginResponse.body.token;
     
-        // Envia uma solicitação DELETE para o endpoint de exclusão de usuário
         const response = await request(app)
             .delete('/api/users/delete')
             .set('Authorization', `Bearer ${authToken}`)
             .expect(200);
     
-        // Verifica se a resposta contém uma mensagem indicando que o usuário foi excluído com sucesso
         expect(response.body).toEqual({ message: 'Usuário excluído com sucesso' });
     });
     
     it('Should return an error if user is not authenticated', async () => {
-        // Envia uma solicitação DELETE para o endpoint de exclusão de usuário sem fornecer token de autenticação
         const response = await request(app)
             .delete('/api/users/delete')
             .expect(401);
     
-        // Verifica se a resposta contém uma mensagem de erro indicando que a autenticação é necessária
         expect(response.body).toEqual({ error: 'Falha na autenticação' });
     });
 });
