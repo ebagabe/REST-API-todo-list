@@ -19,7 +19,7 @@ const authenticate = async (req, res, next) => {
             return res.status(401).json({ error: 'Usuário não autenticado' });
         }
 
-        req.user = user;
+        req.userId = userId;
 
         next();
     } catch (error) {

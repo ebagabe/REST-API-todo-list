@@ -3,7 +3,7 @@ const router = express.Router();
 const todoController = require('../controllers/todoController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-router.use(authMiddleware);
+router.use(authMiddleware.authenticate);
 
 router.post('/', todoController.createTodo);
 router.get('/', todoController.getAllTodos);
