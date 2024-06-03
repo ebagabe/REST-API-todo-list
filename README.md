@@ -64,7 +64,7 @@ O servidor será iniciado na porta configurada no arquivo `.env`.
 
 Você pode testar os endpoints da API utilizando o Postman. Para isso, siga os passos abaixo:
 
-1. Faça o download da coleção Postman clicando [aqui](./API%20Todo.postman_collection.json).
+1. Faça o download da coleção Postman clicando [Download da coleção Postman](./API%20Todo.postman_collection.json).
 2. Abra o Postman e clique em "Import" para importar a coleção.
 3. Selecione o arquivo que você baixou e clique em "Open".
 4. Agora você terá todos os endpoints disponíveis na sua coleção do Postman. Você pode enviar as requisições e testar a API.
