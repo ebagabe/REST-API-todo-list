@@ -2,12 +2,17 @@ const TodoModel = require('../models/todoModel');
 
 exports.createTodo = async (req, res) => {
     try {
-        const { title } = req.body;
+        const { title, description } = req.body;
         const userId = req.userId;
 
-        const newTodo = await TodoModel.create({ title, userId });
+        if (!title || !description) {
+            return res.status(400).json({ error: 'Título e descrição são requeridos' });
+        }
+
+        const newTodo = await TodoModel.create({ title, description, userId });
         res.status(201).json(newTodo);
     } catch (error) {
+        console.error('Error creating todo:', error);
         res.status(500).json({ error: error.message });
     }
 };

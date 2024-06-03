@@ -1,9 +1,9 @@
 const knex = require('knex')(require('../../knexfile')['development']);
 
-exports.create = async ({ title, userId }) => {
+exports.create = async ({ title, description, userId }) => {
     try {
-        const [todoId] = await knex('todos').insert({ title, user_id: userId });
-        return { id: todoId, title, userId };
+        const [todoId] = await knex('todos').insert({ title, description, user_id: userId });
+        return { id: todoId, title, description, userId };
     } catch (error) {
         throw new Error(error);
     }

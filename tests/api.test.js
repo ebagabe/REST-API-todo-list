@@ -113,7 +113,7 @@ describe('Api endpoints', () => {
     });
 
     it('Should create a new todo', async () => {
-        const todoData = { title: 'Test Todo' };
+        const todoData = { title: 'Test Todo', description: 'This is a test todo' };
         const response = await request(app)
             .post('/api/todos')
             .set('Authorization', `Bearer ${authToken}`)
@@ -121,7 +121,8 @@ describe('Api endpoints', () => {
             .expect(201);
 
         expect(response.body).toMatchObject({
-            title: todoData.title
+            title: todoData.title,
+            description: todoData.description
         });
     });
 
