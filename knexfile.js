@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
     development: {
         client: 'mysql2',
@@ -8,10 +10,10 @@ module.exports = {
             database: process.env.DB_NAME,
         },
         migrations: {
-            directory: __dirname + '/db/migrations',
+            directory: __dirname + '/src/db/migrations',
         },
         seeds: {
-            directory: __dirname + '/db/seeds',
+            directory: __dirname + '/src/db/seeds',
         },
     },
 };
