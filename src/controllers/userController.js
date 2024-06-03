@@ -5,6 +5,12 @@ const UserModel = require('../models/userModel');
 exports.register = async (req, res) => {
     const { username, email, password } = req.body;
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ error: 'Formato de e-mail inválido' });
+    }
+
     try {
         const existingUser = await UserModel.findByEmail(email);
         if (existingUser) {
@@ -13,7 +19,7 @@ exports.register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = await UserModel.create({ username, email, password: hashedPassword });
+        const newUser = await UserModel.create({ username, email: email.toLowerCase(), password: hashedPassword });
 
         return res.status(201).json({ user: newUser });
     } catch (error) {
@@ -25,7 +31,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await UserModel.findByEmail(email);
+        const user = await UserModel.findByEmail(email.toLowerCase());
 
         if (!user) {
             return res.status(401).json({ error: 'Dados incorretos ou usuário não disponível' });
