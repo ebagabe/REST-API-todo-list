@@ -3,13 +3,22 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../models/userModel');
 
 exports.register = async (req, res) => {
+    const { username, email, password } = req.body;
+
     try {
-        const { username, email, password } = req.body;
+        const existingUser = await UserModel.findByEmail(email);
+        if (existingUser) {
+            return res.status(400).json({ error: 'E-mail já está em uso' });
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await UserModel.create({ username, email, password: hashedPassword });
-        res.status(201).json({ user })
+
+        const newUser = await UserModel.create({ username, email, password: hashedPassword });
+
+        return res.status(201).json({ user: newUser });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.error('Error registering user:', error);
+        return res.status(500).json({ error: 'Falha ao registrar usuário' });
     }
 };
 
@@ -19,7 +28,7 @@ exports.login = async (req, res) => {
         const user = await UserModel.findByEmail(email);
 
         if (!user) {
-            return res.status(404).json({ message: 'Usuario não encontrado' });
+            return res.status(401).json({ error: 'Dados incorretos ou usuário não disponível' });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);

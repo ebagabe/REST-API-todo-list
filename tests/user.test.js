@@ -2,8 +2,6 @@ const request = require('supertest');
 const app = require('../src/app');
 const knex = require('knex')(require('../knexfile')['development']);
 
-
-
 describe('User endpoints', () => {
     beforeAll(async () => {
         await knex.migrate.rollback();
@@ -35,5 +33,33 @@ describe('User endpoints', () => {
             .expect(200);
 
         expect(response.body).toHaveProperty('token');
+    });
+
+    it('Should return an error when registering a user with duplicate email', async () => {
+        const userData = { username: 'testuser', email: 'test@example.com', password: 'password123' };
+        await request(app)
+            .post('/api/users/register')
+            .send(userData)
+            .expect(400);
+    });
+
+    it('Should return an error when registering a user with incomplete data', async () => {
+        const incompleteUserData = { email: 'test@example.com', password: 'password123' };
+        const response = await request(app)
+            .post('/api/users/register')
+            .send(incompleteUserData)
+            .expect(400);
+
+        expect(response.body).toHaveProperty('error');
+    });
+
+    it('Should return an error when login with invalid credentials', async () => {
+        const invalidUserData = { email: 'invalid@example.com', password: 'invalidpassword' };
+        const response = await request(app)
+            .post('/api/users/login')
+            .send(invalidUserData)
+            .expect(401);
+
+        expect(response.body).toHaveProperty('error');
     });
 });
