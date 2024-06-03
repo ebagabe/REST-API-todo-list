@@ -47,6 +47,11 @@ exports.updateTodo = async (req, res) => {
         const { title, completed } = req.body;
         const userId = req.userId;
 
+        const existingTodo = await TodoModel.getByIdAndUserId(id, userId);
+        if (!existingTodo) {
+            return res.status(404).json({ error: 'Tarefa não encontrada' });
+        }
+
         const updatedTodo = await TodoModel.update(id, { title, completed, userId });
         res.json(updatedTodo);
     } catch (error) {
