@@ -30,10 +30,10 @@ exports.getAllTodos = async (req, res) => {
 exports.getTodoById = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.userId; // obtém o ID do usuário do token JWT
+        const userId = req.userId; 
         const todo = await TodoModel.getByIdAndUserId(id, userId);
         if (!todo) {
-            return res.status(404).json({ error: 'Todo not found' });
+            return res.status(404).json({ error: 'Tarefa não encontrada' });
         }
         res.json(todo);
     } catch (error) {
