@@ -43,3 +43,16 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.deleteUser = async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+        await UserModel.deleteById(userId);
+
+        return res.status(200).json({ message: 'Usuário excluído com sucesso' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        return res.status(500).json({ error: 'Falha ao excluir usuário' });
+    }
+}

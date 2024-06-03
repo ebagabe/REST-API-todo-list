@@ -17,3 +17,20 @@ exports.findByEmail = async (email) => {
         throw new Error(error);
     }
 };
+
+exports.findById = async (userId) => {
+    try {
+        const user = await knex('users').where({ id: userId }).first();
+        return user;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+exports.deleteById = async (userId) => {
+    try {
+        await knex('users').where({ id: userId }).del();
+    } catch (error) {
+        throw new Error(error);
+    }
+};
