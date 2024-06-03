@@ -46,7 +46,9 @@ exports.login = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.userId;
+
+        console.log(userId);
 
         await UserModel.deleteById(userId);
 
